@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Astronomy Quiz</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #020617;
+      overflow: hidden;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Stars animation */
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.3; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1.2); }
+    }
+
+    .quiz-container {
+      background: rgba(21, 27, 61, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      width: 550px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      position: relative;
+      z-index: 10;
+    }
+    h2 { margin-bottom: 15px; font-size: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 10px; }
+    label { cursor: pointer; }
+    button {
+      padding: 10px 16px;
+      margin-top: 12px;
+      border: none;
+      background: linear-gradient(90deg,#00d4ff,#7a5cff);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .feedback { margin-top: 12px; font-weight: bold; }
+    .correct { color: #47ffa7; }
+    .wrong { color: #ff6b6b; }
+    .result { text-align: center; }
+    .btn-home {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: #444;
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Stars -->
+  <script>
+    for (let i = 0; i < 100; i++) {
+      let star = document.createElement("div");
+      star.className = "star";
+      star.style.top = Math.random() * 100 + "vh";
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.animationDuration = (1 + Math.random() * 3) + "s";
+      document.body.appendChild(star);
+    }
+  </script>
+
+  <div class="quiz-container">
+    <h2 id="question">Question text</h2>
+    <ul>
+      <li>
+        <input type="radio" name="answer" id="a" class="answer">
+        <label for="a" id="a_text">Option A</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="b" class="answer">
+        <label for="b" id="b_text">Option B</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="c" class="answer">
+        <label for="c" id="c_text">Option C</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="d" class="answer">
+        <label for="d" id="d_text">Option D</label>
+      </li>
+    </ul>
+    <button id="submit">Submit</button>
+    <div id="feedback" class="feedback"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {question:"Q1. Stars are primarily formed from:",a:"Hydrogen and Helium gas clouds",b:"Rocks and dust",c:"Heavy metals",d:"Ice particles",correct:"a"},
+      {question:"Q2. The huge clouds of gas and dust where stars are born are called:",a:"Asteroids",b:"Nebulae",c:"Meteoroids",d:"Black holes",correct:"b"},
+      {question:"Q3. Which force causes the collapse of a nebula to form stars?",a:"Magnetic force",b:"Gravitational force",c:"Nuclear force",d:"Electric force",correct:"b"},
+      {question:"Q4. What process powers stars after their formation?",a:"Radioactivity",b:"Nuclear fission",c:"Nuclear fusion",d:"Chemical reaction",correct:"c"},
+      {question:"Q5. The first stage in star formation is:",a:"Protostar",b:"Red Giant",c:"Supernova",d:"White Dwarf",correct:"a"},
+      {question:"Q6. The Sun is classified as a:",a:"Red Giant",b:"Neutron Star",c:"Yellow Dwarf (Main Sequence Star)",d:"Supergiant",correct:"c"},
+      {question:"Q7. The hottest stars appear:",a:"Blue",b:"Red",c:"Yellow",d:"White",correct:"a"},
+      {question:"Q8. Which stars are cooler in temperature?",a:"Blue stars",b:"Yellow stars",c:"Red stars",d:"White dwarfs",correct:"c"},
+      {question:"Q9. A very dense star made mostly of neutrons is:",a:"White dwarf",b:"Neutron star",c:"Protostar",d:"Red giant",correct:"b"},
+      {question:"Q10. A star that explodes at the end of its life cycle is called:",a:"Nova",b:"Supernova",c:"Pulsar",d:"Black hole",correct:"b"},
+      {question:"Q11. Which layer of the Sun is visible during a solar eclipse?",a:"Core",b:"Photosphere",c:"Corona",d:"Chromosphere",correct:"c"},
+      {question:"Q12. The Sun’s energy is produced in its:",a:"Photosphere",b:"Core",c:"Corona",d:"Mantle",correct:"b"},
+      {question:"Q13. The Sun is mainly composed of:",a:"Oxygen and Nitrogen",b:"Hydrogen and Helium",c:"Iron and Nickel",d:"Carbon and Silicon",correct:"b"},
+      {question:"Q14. Which star is closest to Earth after the Sun?",a:"Sirius",b:"Proxima Centauri",c:"Betelgeuse",d:"Vega",correct:"b"},
+      {question:"Q15. A rapidly spinning neutron star emitting radiation is called:",a:"Pulsar",b:"Quasar",c:"Nova",d:"Red giant",correct:"a"},
+      {question:"Q16. The natural satellite of Earth is:",a:"Phobos",b:"Titan",c:"Moon",d:"Europa",correct:"c"},
+      {question:"Q17. Asteroids are mostly found between:",a:"Earth and Mars",b:"Mars and Jupiter",c:"Jupiter and Saturn",d:"Saturn and Uranus",correct:"b"},
+      {question:"Q18. Comets are made up of:",a:"Rocks and iron",b:"Ice, gas, and dust",c:"Only metals",d:"Plasma",correct:"b"},
+      {question:"Q19. The glowing tail of a comet always points:",a:"Toward the Sun",b:"Away from the Sun",c:"Toward Earth",d:"In random direction",correct:"b"},
+      {question:"Q20. Meteoroids that reach Earth’s surface are called:",a:"Meteors",b:"Asteroids",c:"Meteorites",d:"Comets",correct:"c"},
+      {question:"Q21. Which planet has the largest number of moons?",a:"Jupiter",b:"Saturn",c:"Uranus",d:"Neptune",correct:"b"},
+      {question:"Q22. The largest asteroid in the asteroid belt is:",a:"Ceres",b:"Vesta",c:"Pallas",d:"Eros",correct:"a"},
+      {question:"Q23. A “shooting star” actually is a:",a:"Star",b:"Meteor",c:"Comet",d:"Moon fragment",correct:"b"},
+      {question:"Q24. Phobos and Deimos are moons of:",a:"Earth",b:"Mars",c:"Jupiter",d:"Saturn",correct:"b"},
+      {question:"Q25. Halley’s Comet appears approximately every:",a:"50 years",b:"76 years",c:"100 years",d:"200 years",correct:"b"},
+      {question:"Q26. The galaxy that contains our Solar System is:",a:"Andromeda",b:"Milky Way",c:"Whirlpool",d:"Sombrero",correct:"b"},
+      {question:"Q27. The shape of the Milky Way is:",a:"Elliptical",b:"Irregular",c:"Spiral",d:"Spherical",correct:"c"},
+      {question:"Q28. The center of the Milky Way contains:",a:"A giant planet",b:"A supermassive black hole",c:"A neutron star",d:"A red supergiant",correct:"b"},
+      {question:"Q29. The Solar System is located in which arm of the Milky Way?",a:"Orion Arm",b:"Perseus Arm",c:"Sagittarius Arm",d:"Cygnus Arm",correct:"a"},
+      {question:"Q30. The diameter of the Milky Way is about:",a:"1,000 light-years",b:"10,000 light-years",c:"100,000 light-years",d:"1,000,000 light-years",correct:"c"},
+      {question:"Q31. The nearest major galaxy to the Milky Way is:",a:"Sombrero",b:"Andromeda",c:"Whirlpool",d:"Triangulum",correct:"b"},
+      {question:"Q32. Galaxies with no regular shape are called:",a:"Spiral",b:"Elliptical",c:"Irregular",d:"Dwarf",correct:"c"},
+      {question:"Q33. Elliptical galaxies are generally:",a:"Young and blue",b:"Old and red",c:"Spiral in shape",d:"Contain many nebulae",correct:"b"},
+      {question:"Q34. Spiral galaxies contain:",a:"Mostly old stars",b:"Mostly young stars",c:"Both old and young stars",d:"Only black holes",correct:"c"},
+      {question:"Q35. Which type of galaxy is the most common in the universe?",a:"Spiral",b:"Elliptical",c:"Irregular",d:"Ring",correct:"b"},
+      {question:"Q36. Quasars are:",a:"Small asteroids",b:"Very energetic galactic centers",c:"Faint stars",d:"Planetary nebulae",correct:"b"},
+      {question:"Q37. Which galaxy is nicknamed the Whirlpool Galaxy?",a:"M31",b:"M51",c:"M87",d:"M101",correct:"b"},
+      {question:"Q38. Galaxies are held together mainly by:",a:"Gravity",b:"Magnetism",c:"Nuclear force",d:"Dark energy",correct:"a"},
+      {question:"Q39. Dwarf galaxies are:",a:"Larger than spiral galaxies",b:"Smaller galaxies with fewer stars",c:"Always irregular in shape",d:"Formed only near the Milky Way",correct:"b"},
+      {question:"Q40. The largest type of galaxies are:",a:"Elliptical",b:"Spiral",c:"Irregular",d:"Ring",correct:"a"},
+      {question:"Q41. The Sun will eventually become a:",a:"Supernova",b:"Red giant → White dwarf",c:"Neutron star",d:"Black hole",correct:"b"},
+      {question:"Q42. Which planet’s moon is Titan?",a:"Jupiter",b:"Saturn",c:"Neptune",d:"Uranus",correct:"b"},
+      {question:"Q43. Which star is known as the Dog Star?",a:"Betelgeuse",b:"Proxima Centauri",c:"Sirius",d:"Vega",correct:"c"},
+      {question:"Q44. Which is the brightest object in the night sky after the Moon?",a:"Venus",b:"Jupiter",c:"Sirius",d:"Mars",correct:"a"},
+      {question:"Q45. What is the life cycle of the most massive stars likely to end as?",a:"White dwarf",b:"Neutron star or black hole",c:"Red giant only",d:"Brown dwarf",correct:"b"},
+      {question:"Q46. Which planet’s moon is Europa?",a:"Saturn",b:"Jupiter",c:"Uranus",d:"Neptune",correct:"b"},
+      {question:"Q47. Which comet was visible in 1997 with a very long tail?",a:"Halley’s Comet",b:"Hale-Bopp",c:"Encke",d:"Shoemaker-Levy 9",correct:"b"},
+      {question:"Q48. The Sun is about how many years old?",a:"1 billion",b:"2.5 billion",c:"4.6 billion",d:"10 billion",correct:"c"},
+      {question:"Q49. Which force keeps planets in orbit around the Sun?",a:"Nuclear force",b:"Gravitational force",c:"Magnetic force",d:"Centrifugal force",correct:"b"},
+      {question:"Q50. The Andromeda galaxy will collide with the Milky Way in about:",a:"1 billion years",b:"2.5 billion years",c:"4.5 billion years",d:"10 billion years",correct:"c"},
+    ];
+
+    const questionEl = document.getElementById('question');
+    const answersEls = document.querySelectorAll('.answer');
+    const a_text = document.getElementById('a_text');
+    const b_text = document.getElementById('b_text');
+    const c_text = document.getElementById('c_text');
+    const d_text = document.getElementById('d_text');
+    const submitBtn = document.getElementById('submit');
+    const feedbackEl = document.getElementById('feedback');
+
+    let currentQuiz = 0;
+    let score = 0;
+    let answered = false;
+
+    loadQuiz();
+
+    function loadQuiz() {
+      deselectAnswers();
+      answered = false;
+      feedbackEl.innerHTML = "";
+      submitBtn.textContent = "Submit";
+
+      const currentQuizData = quizData[currentQuiz];
+      questionEl.innerText = currentQuizData.question;
+      a_text.innerText = currentQuizData.a;
+      b_text.innerText = currentQuizData.b;
+      c_text.innerText = currentQuizData.c;
+      d_text.innerText = currentQuizData.d;
+    }
+
+    function deselectAnswers() {
+      answersEls.forEach(el => el.checked = false);
+    }
+
+    function getSelected() {
+      let answer;
+      answersEls.forEach(el => { if (el.checked) answer = el.id; });
+      return answer;
+    }
+
+    submitBtn.addEventListener('click', () => {
+      if (!answered) {
+        const answer = getSelected();
+        if (!answer) { alert("Please select an option!"); return; }
+
+        const correct = quizData[currentQuiz].correct;
+        if (answer === correct) {
+          score++;
+          feedbackEl.innerHTML = `<span class="correct">✅ Correct!</span>`;
+        } else {
+          const correctText = document.getElementById(correct + "_text").innerText;
+          feedbackEl.innerHTML = `<span class="wrong">❌ Wrong! Correct answer: ${correctText}</span>`;
+        }
+
+        answered = true;
+        submitBtn.textContent = (currentQuiz < quizData.length - 1) ? "Next Question" : "See Results";
+      } else {
+        currentQuiz++;
+        if (currentQuiz < quizData.length) {
+          loadQuiz();
+        } else {
+          document.querySelector('.quiz-container').innerHTML =
+            `<div class="result">
+               <h2>You answered ${score}/${quizData.length} correctly</h2>
+               <a href="astronomy.html" class="btn-home">Retry</a>
+               <a href="index.html" class="btn-home">Back to Home</a>
+             </div>`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

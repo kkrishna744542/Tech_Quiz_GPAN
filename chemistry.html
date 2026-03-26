@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chemistry Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #172a0f 20%, #061702 100%);
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .quiz-container {
+      background: #1b3d15;
+      padding: 20px;
+      border-radius: 12px;
+      width: 500px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    h2 { margin-bottom: 15px; font-size: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 10px; }
+    label { cursor: pointer; }
+    button {
+      padding: 10px 16px;
+      margin-top: 12px;
+      border: none;
+      background: linear-gradient(90deg,#00ff99,#66ff33);
+      color: #000;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .feedback { margin-top: 12px; font-weight: bold; }
+    .correct { color: #47ffa7; }
+    .wrong { color: #ff6b6b; }
+    .result { text-align: center; }
+    .btn-home {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: #444;
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Question text</h2>
+    <ul>
+      <li>
+        <input type="radio" name="answer" id="a" class="answer">
+        <label for="a" id="a_text">Option A</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="b" class="answer">
+        <label for="b" id="b_text">Option B</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="c" class="answer">
+        <label for="c" id="c_text">Option C</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="d" class="answer">
+        <label for="d" id="d_text">Option D</label>
+      </li>
+    </ul>
+    <button id="submit">Submit</button>
+    <div id="feedback" class="feedback"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {question:"1. Matter is anything that has:",a:"Mass and occupies space",b:"Weight only",c:"Volume only",d:"None of these",correct:"a"},
+      {question:"2. Which of the following is NOT a state of matter?",a:"Solid",b:"Liquid",c:"Gas",d:"Energy",correct:"d"},
+      {question:"3. The smallest particle of an element is:",a:"Atom",b:"Molecule",c:"Ion",d:"Compound",correct:"a"},
+      {question:"4. Which state of matter has definite shape and volume?",a:"Solid",b:"Liquid",c:"Gas",d:"Plasma",correct:"a"},
+      {question:"5. Which state of matter has no fixed shape but definite volume?",a:"Solid",b:"Liquid",c:"Gas",d:"Plasma",correct:"b"},
+      {question:"6. Which state of matter is highly compressible?",a:"Solid",b:"Liquid",c:"Gas",d:"None",correct:"c"},
+      {question:"7. The intermolecular force is strongest in:",a:"Solids",b:"Liquids",c:"Gases",d:"Plasma",correct:"a"},
+      {question:"8. The intermolecular space is maximum in:",a:"Solids",b:"Liquids",c:"Gases",d:"None",correct:"c"},
+      {question:"9. Conversion of solid into gas without becoming liquid is:",a:"Condensation",b:"Sublimation",c:"Evaporation",d:"Fusion",correct:"b"},
+      {question:"10. Which process changes liquid into vapor at any temperature?",a:"Boiling",b:"Evaporation",c:"Condensation",d:"Melting",correct:"b"},
+      {question:"11. Boiling occurs at:",a:"Any temperature",b:"Only at boiling point",c:"0°C",d:"Room temperature",correct:"b"},
+      {question:"12. Conversion of liquid into solid is called:",a:"Melting",b:"Freezing",c:"Vaporization",d:"Condensation",correct:"b"},
+      {question:"13. Melting of ice is:",a:"Physical change",b:"Chemical change",c:"Both",d:"None",correct:"a"},
+      {question:"14. Which is NOT a physical property?",a:"Shape",b:"Color",c:"Density",d:"Burning",correct:"d"},
+      {question:"15. Rusting of iron is:",a:"Physical change",b:"Chemical change",c:"Both",d:"None",correct:"b"},
+      {question:"16. Which state of matter is also called supercooled liquid?",a:"Solid",b:"Glass",c:"Gas",d:"Plasma",correct:"b"},
+      {question:"17. Which state of matter has minimum kinetic energy?",a:"Solid",b:"Liquid",c:"Gas",d:"Plasma",correct:"a"},
+      {question:"18. Which state of matter can be compressed easily?",a:"Solids",b:"Liquids",c:"Gases",d:"None",correct:"c"},
+      {question:"19. Which of the following is a homogeneous mixture?",a:"Sand and water",b:"Salt solution",c:"Oil and water",d:"Smoke",correct:"b"},
+      {question:"20. Which of the following is a heterogeneous mixture?",a:"Air",b:"Vinegar",c:"Salt in water",d:"Oil in water",correct:"d"},
+      {question:"21. Which of the following is an element?",a:"Water",b:"Oxygen",c:"Salt",d:"Sugar",correct:"b"},
+      {question:"22. Water is:",a:"Element",b:"Compound",c:"Mixture",d:"None",correct:"b"},
+      {question:"23. Salt is a:",a:"Compound",b:"Element",c:"Mixture",d:"Alloy",correct:"a"},
+      {question:"24. Brass is a:",a:"Compound",b:"Alloy",c:"Mixture",d:"Element",correct:"b"},
+      {question:"25. Which is a colloid?",a:"Milk",b:"Salt solution",c:"Oil in water",d:"Sand in water",correct:"a"},
+      {question:"26. In solids, particles are arranged in:",a:"Random order",b:"Fixed positions",c:"Free movement",d:"Large gaps",correct:"b"},
+      {question:"27. Example of sublimation is:",a:"Ice → water",b:"Camphor → vapor",c:"Water → steam",d:"Steam → water",correct:"b"},
+      {question:"28. Which gas shows liquid-like properties at high pressure?",a:"Oxygen",b:"Carbon dioxide",c:"Nitrogen",d:"Hydrogen",correct:"b"},
+      {question:"29. At absolute zero, particles have:",a:"Maximum energy",b:"No energy",c:"Infinite energy",d:"Constant energy",correct:"b"},
+      {question:"30. Absolute zero is equal to:",a:"0°C",b:"-100°C",c:"-273°C",d:"-373°C",correct:"c"},
+      {question:"31. Dry ice is:",a:"Solid nitrogen",b:"Solid oxygen",c:"Solid carbon dioxide",d:"Solid hydrogen",correct:"c"},
+      {question:"32. Which of the following is NOT matter?",a:"Air",b:"Light",c:"Water",d:"Rock",correct:"b"},
+      {question:"33. Plasma state is found in:",a:"Stars",b:"Water",c:"Sand",d:"Glass",correct:"a"},
+      {question:"34. Gas particles exert pressure because:",a:"They attract each other",b:"They collide with container walls",c:"They have large gaps",d:"They expand",correct:"b"},
+      {question:"35. Brownian motion is evidence of:",a:"Large size of particles",b:"Continuous motion of particles",c:"Rest position of particles",d:"None",correct:"b"},
+      {question:"36. Liquids change shape because:",a:"Intermolecular forces are negligible",b:"Particles can slide over each other",c:"They have fixed positions",d:"They have no mass",correct:"b"},
+      {question:"37. Which state of matter has highest kinetic energy?",a:"Solid",b:"Liquid",c:"Gas",d:"Plasma",correct:"d"},
+      {question:"38. Liquefied petroleum gas (LPG) is stored under:",a:"High temperature",b:"High pressure",c:"Low pressure",d:"Room pressure",correct:"b"},
+      {question:"39. CNG stands for:",a:"Compressed Nitrogen Gas",b:"Compressed Natural Gas",c:"Carbon Natural Gas",d:"Cold Natural Gas",correct:"b"},
+      {question:"40. Which is not an example of matter?",a:"Chair",b:"Music",c:"Water",d:"Air",correct:"b"},
+      {question:"41. Boiling point of water at sea level is:",a:"90°C",b:"100°C",c:"110°C",d:"120°C",correct:"b"},
+      {question:"42. Which is NOT a mixture?",a:"Air",b:"Milk",c:"Sugar",d:"Brass",correct:"c"},
+      {question:"43. Which state of matter is used in fluorescent tubes?",a:"Liquid",b:"Gas",c:"Plasma",d:"Solid",correct:"c"},
+      {question:"44. The SI unit of pressure is:",a:"Pascal",b:"Joule",c:"Newton",d:"kg",correct:"a"},
+      {question:"45. A mixture of sand and salt can be separated by:",a:"Distillation",b:"Evaporation",c:"Filtration",d:"Chromatography",correct:"c"},
+      {question:"46. Which is a heterogeneous mixture?",a:"Air",b:"Vinegar",c:"Soil",d:"Alloy",correct:"c"},
+      {question:"47. The physical state of water at 0°C is:",a:"Solid only",b:"Liquid only",c:"Solid + Liquid",d:"Gas",correct:"c"},
+      {question:"48. At constant temperature, pressure and volume of a gas are related by:",a:"Boyle’s Law",b:"Charles’ Law",c:"Dalton’s Law",d:"Avogadro’s Law",correct:"a"},
+      {question:"49. Volume of a gas is directly proportional to temperature at constant pressure. This is:",a:"Boyle’s Law",b:"Charles’ Law",c:"Dalton’s Law",d:"Graham’s Law",correct:"b"},
+      {question:"50. Who gave the atomic theory of matter?",a:"Dalton",b:"Rutherford",c:"Bohr",d:"Einstein",correct:"a"}
+    ];
+
+    const questionEl = document.getElementById('question');
+    const answersEls = document.querySelectorAll('.answer');
+    const a_text = document.getElementById('a_text');
+    const b_text = document.getElementById('b_text');
+    const c_text = document.getElementById('c_text');
+    const d_text = document.getElementById('d_text');
+    const submitBtn = document.getElementById('submit');
+    const feedbackEl = document.getElementById('feedback');
+
+    let currentQuiz = 0;
+    let score = 0;
+    let answered = false;
+
+    loadQuiz();
+
+    function loadQuiz() {
+      deselectAnswers();
+      answered = false;
+      feedbackEl.innerHTML = "";
+      submitBtn.textContent = "Submit";
+
+      const currentQuizData = quizData[currentQuiz];
+      questionEl.innerText = currentQuizData.question;
+      a_text.innerText = currentQuizData.a;
+      b_text.innerText = currentQuizData.b;
+      c_text.innerText = currentQuizData.c;
+      d_text.innerText = currentQuizData.d;
+    }
+
+    function deselectAnswers() {
+      answersEls.forEach(el => el.checked = false);
+    }
+
+    function getSelected() {
+      let answer;
+      answersEls.forEach(el => { if (el.checked) answer = el.id; });
+      return answer;
+    }
+
+    submitBtn.addEventListener('click', () => {
+      if (!answered) {
+        const answer = getSelected();
+        if (!answer) { alert("Please select an option!"); return; }
+
+        const correct = quizData[currentQuiz].correct;
+        if (answer === correct) {
+          score++;
+          feedbackEl.innerHTML = `<span class="correct">✅ Correct!</span>`;
+        } else {
+          const correctText = document.getElementById(correct + "_text").innerText;
+          feedbackEl.innerHTML = `<span class="wrong">❌ Wrong! Correct answer: ${correctText}</span>`;
+        }
+
+        answered = true;
+        submitBtn.textContent = (currentQuiz < quizData.length - 1) ? "Next Question" : "See Results";
+      } else {
+        currentQuiz++;
+        if (currentQuiz < quizData.length) {
+          loadQuiz();
+        } else {
+          document.querySelector('.quiz-container').innerHTML =
+            `<div class="result">
+               <h2>You answered ${score}/${quizData.length} correctly</h2>
+               <a href="chemistry.html" class="btn-home">Retry</a>
+               <a href="index.html" class="btn-home">Back to Home</a>
+             </div>`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Biology Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #0f172a 20%, #020617 100%);
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .quiz-container {
+      background: #151b3d;
+      padding: 20px;
+      border-radius: 12px;
+      width: 500px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    h2 { margin-bottom: 15px; font-size: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 10px; }
+    label { cursor: pointer; }
+    button {
+      padding: 10px 16px;
+      margin-top: 12px;
+      border: none;
+      background: linear-gradient(90deg,#00d4ff,#7a5cff);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .feedback { margin-top: 12px; font-weight: bold; }
+    .correct { color: #47ffa7; }
+    .wrong { color: #ff6b6b; }
+    .result { text-align: center; }
+    .btn-home {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: #444;
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Question text</h2>
+    <ul>
+      <li>
+        <input type="radio" name="answer" id="a" class="answer">
+        <label for="a" id="a_text">Option A</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="b" class="answer">
+        <label for="b" id="b_text">Option B</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="c" class="answer">
+        <label for="c" id="c_text">Option C</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="d" class="answer">
+        <label for="d" id="d_text">Option D</label>
+      </li>
+    </ul>
+    <button id="submit">Submit</button>
+    <div id="feedback" class="feedback"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {question:"Q1. The living world refers to:",a:"Plants only",b:"Animals only",c:"All living organisms",d:"Non-living things",correct:"c"},
+      {question:"Q2. The branch of biology dealing with classification is:",a:"Morphology",b:"Taxonomy",c:"Ecology",d:"Anatomy",correct:"b"},
+      {question:"Q3. Father of taxonomy is:",a:"Aristotle",b:"Linnaeus",c:"Darwin",d:"Mendel",correct:"b"},
+      {question:"Q4. Binomial nomenclature means:",a:"Two scientists name a species",b:"Two words for scientific name",c:"Name in two languages",d:"None",correct:"b"},
+      {question:"Q5. In binomial nomenclature, the first word is:",a:"Species",b:"Genus",c:"Family",d:"Class",correct:"b"},
+      {question:"Q6. The second word in scientific name is:",a:"Species",b:"Genus",c:"Order",d:"Class",correct:"a"},
+      {question:"Q7. Scientific name of human is:",a:"Homo erectus",b:"Homo sapiens",c:"Homo habilis",d:"Homo neanderthalensis",correct:"b"},
+      {question:"Q8. Taxonomic hierarchy includes how many categories?",a:"5",b:"6",c:"7",d:"8",correct:"d"},
+      {question:"Q9. The highest taxonomic rank is:",a:"Family",b:"Kingdom",c:"Phylum",d:"Order",correct:"b"},
+      {question:"Q10. Which is the lowest rank in taxonomy?",a:"Genus",b:"Species",c:"Family",d:"Order",correct:"b"},
+      {question:"Q11. Which scientist is known as father of biology?",a:"Darwin",b:"Aristotle",c:"Linnaeus",d:"Mendel",correct:"b"},
+      {question:"Q12. Which is not a characteristic of living beings?",a:"Growth",b:"Reproduction",c:"Consciousness",d:"Rusting",correct:"d"},
+      {question:"Q13. Virus is placed:",a:"In living organisms",b:"In non-living",c:"Between living and non-living",d:"Fungi",correct:"c"},
+      {question:"Q14. Which kingdom includes bacteria?",a:"Plantae",b:"Animalia",c:"Monera",d:"Protista",correct:"c"},
+      {question:"Q15. The study of fungi is called:",a:"Bryology",b:"Mycology",c:"Phycology",d:"Virology",correct:"b"},
+      {question:"Q16. The study of algae is:",a:"Mycology",b:"Phycology",c:"Bryology",d:"Virology",correct:"b"},
+      {question:"Q17. Who gave the five-kingdom classification?",a:"Darwin",b:"Whittaker",c:"Aristotle",d:"Linnaeus",correct:"b"},
+      {question:"Q18. Which is NOT in Whittaker’s classification?",a:"Monera",b:"Protista",c:"Plantae",d:"Virus",correct:"d"},
+      {question:"Q19. Prokaryotes belong to kingdom:",a:"Monera",b:"Protista",c:"Plantae",d:"Animalia",correct:"a"},
+      {question:"Q20. Scientific names are generally in:",a:"English",b:"Latin",c:"Greek",d:"Sanskrit",correct:"b"},
+      {question:"Q21. Which is a taxonomic aid?",a:"Herbarium",b:"Key",c:"Botanical garden",d:"All of these",correct:"d"},
+      {question:"Q22. A place where dried plant specimens are preserved:",a:"Botanical garden",b:"Herbarium",c:"Zoo",d:"Key",correct:"b"},
+      {question:"Q23. Zoological parks are:",a:"Natural homes of animals",b:"Places for ex-situ conservation",c:"Places for plant storage",d:"Forests",correct:"b"},
+      {question:"Q24. The taxonomic key is used for:",a:"Naming",b:"Identification",c:"Classification",d:"Preservation",correct:"b"},
+      {question:"Q25. Growth in living beings occurs by:",a:"Cell division",b:"Increase in size",c:"Deposition of material",d:"None",correct:"a"},
+      {question:"Q26. Reproduction by binary fission occurs in:",a:"Amoeba",b:"Hydra",c:"Planaria",d:"Yeast",correct:"a"},
+      {question:"Q27. Budding occurs in:",a:"Amoeba",b:"Hydra",c:"Planaria",d:"Bacteria",correct:"b"},
+      {question:"Q28. Who is called father of zoology?",a:"Aristotle",b:"Linnaeus",c:"Darwin",d:"Mendel",correct:"a"},
+      {question:"Q29. Which is the correct sequence?",a:"Class → Order → Family → Genus → Species",b:"Class → Order → Genus → Family → Species",c:"Kingdom → Class → Family → Genus → Species",d:"Phylum → Family → Class → Order → Species",correct:"a"},
+      {question:"Q30. Which group shows highest similarity?",a:"Family",b:"Genus",c:"Species",d:"Order",correct:"c"},
+      {question:"Q31. The study of classification is also called:",a:"Ecology",b:"Taxonomy",c:"Genetics",d:"Cytology",correct:"b"},
+      {question:"Q32. Which taxonomic rank comes after phylum?",a:"Family",b:"Class",c:"Order",d:"Genus",correct:"b"},
+      {question:"Q33. The term “taxonomy” was given by:",a:"Linnaeus",b:"Theophrastus",c:"A.P. de Candolle",d:"Darwin",correct:"c"},
+      {question:"Q34. The smallest unit of classification is:",a:"Family",b:"Species",c:"Genus",d:"Order",correct:"b"},
+      {question:"Q35. Which kingdom includes unicellular eukaryotes?",a:"Monera",b:"Protista",c:"Fungi",d:"Plantae",correct:"b"},
+      {question:"Q36. Bryophytes are included in kingdom:",a:"Animalia",b:"Monera",c:"Plantae",d:"Protista",correct:"c"},
+      {question:"Q37. Viruses contain:",a:"DNA only",b:"RNA only",c:"DNA or RNA",d:"Both DNA and RNA",correct:"c"},
+      {question:"Q38. Who gave binomial nomenclature?",a:"Darwin",b:"Linnaeus",c:"Whittaker",d:"Mendel",correct:"b"},
+      {question:"Q39. Which is not a living characteristic?",a:"Metabolism",b:"Growth",c:"Consciousness",d:"Crystallization",correct:"d"},
+      {question:"Q40. The largest botanical garden in India is:",a:"NBRI Lucknow",b:"Indian Botanic Garden, Howrah",c:"Delhi Garden",d:"Mysore Garden",correct:"b"},
+      {question:"Q41. ICZN stands for:",a:"International Code of Zoological Nomenclature",b:"Indian Council of Zoological Nomenclature",c:"International Council of Zoology Names",d:"None",correct:"a"},
+      {question:"Q42. Which character is exclusive to living organisms?",a:"Growth",b:"Reproduction",c:"Metabolism",d:"Movement",correct:"c"},
+      {question:"Q43. The systematic arrangement of organisms is called:",a:"Classification",b:"Taxonomy",c:"Systematics",d:"Morphology",correct:"c"},
+      {question:"Q44. Who is known as father of modern botany?",a:"Linnaeus",b:"Theophrastus",c:"Mendel",d:"Hooke",correct:"b"},
+      {question:"Q45. The living world provides:",a:"Food",b:"Oxygen",c:"Medicine",d:"All of these",correct:"d"},
+      {question:"Q46. Excretion in living organisms is removal of:",a:"Oxygen",b:"Waste",c:"Food",d:"DNA",correct:"b"},
+      {question:"Q47. The term “systematics” was first used by:",a:"Linnaeus",b:"Aristotle",c:"Carolus Linnaeus",d:"Theophrastus",correct:"a"},
+      {question:"Q48. Consciousness is the most unique feature of:",a:"Plants",b:"Animals",c:"Viruses",d:"Fungi",correct:"b"},
+      {question:"Q49. Plants show movement due to:",a:"Nervous system",b:"Growth",c:"Hormones",d:"None",correct:"c"},
+      {question:"Q50. Which of the following is not a taxonomic aid?",a:"Museum",b:"Herbarium",c:"Key",d:"Soil profile",correct:"d"},
+    ];
+
+    const questionEl = document.getElementById('question');
+    const answersEls = document.querySelectorAll('.answer');
+    const a_text = document.getElementById('a_text');
+    const b_text = document.getElementById('b_text');
+    const c_text = document.getElementById('c_text');
+    const d_text = document.getElementById('d_text');
+    const submitBtn = document.getElementById('submit');
+    const feedbackEl = document.getElementById('feedback');
+
+    let currentQuiz = 0;
+    let score = 0;
+    let answered = false;
+
+    loadQuiz();
+
+    function loadQuiz() {
+      deselectAnswers();
+      answered = false;
+      feedbackEl.innerHTML = "";
+      submitBtn.textContent = "Submit";
+
+      const currentQuizData = quizData[currentQuiz];
+      questionEl.innerText = currentQuizData.question;
+      a_text.innerText = currentQuizData.a;
+      b_text.innerText = currentQuizData.b;
+      c_text.innerText = currentQuizData.c;
+      d_text.innerText = currentQuizData.d;
+    }
+
+    function deselectAnswers() {
+      answersEls.forEach(el => el.checked = false);
+    }
+
+    function getSelected() {
+      let answer;
+      answersEls.forEach(el => { if (el.checked) answer = el.id; });
+      return answer;
+    }
+
+    submitBtn.addEventListener('click', () => {
+      if (!answered) {
+        const answer = getSelected();
+        if (!answer) { alert("Please select an option!"); return; }
+
+        const correct = quizData[currentQuiz].correct;
+        if (answer === correct) {
+          score++;
+          feedbackEl.innerHTML = `<span class="correct">✅ Correct!</span>`;
+        } else {
+          const correctText = document.getElementById(correct + "_text").innerText;
+          feedbackEl.innerHTML = `<span class="wrong">❌ Wrong! Correct answer: ${correctText}</span>`;
+        }
+
+        answered = true;
+        submitBtn.textContent = (currentQuiz < quizData.length - 1) ? "Next Question" : "See Results";
+      } else {
+        currentQuiz++;
+        if (currentQuiz < quizData.length) {
+          loadQuiz();
+        } else {
+          document.querySelector('.quiz-container').innerHTML =
+            `<div class="result">
+               <h2>You answered ${score}/${quizData.length} correctly</h2>
+               <a href="biology.html" class="btn-home">Retry</a>
+               <a href="index.html" class="btn-home">Back to Home</a>
+             </div>`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

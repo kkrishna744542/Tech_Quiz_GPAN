@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Physics Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #0f172a 20%, #020617 100%);
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .quiz-container {
+      background: #151b3d;
+      padding: 20px;
+      border-radius: 12px;
+      width: 500px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    h2 { margin-bottom: 15px; font-size: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 10px; }
+    label { cursor: pointer; }
+    button {
+      padding: 10px 16px;
+      margin-top: 12px;
+      border: none;
+      background: linear-gradient(90deg,#00d4ff,#7a5cff);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .feedback { margin-top: 12px; font-weight: bold; }
+    .correct { color: #47ffa7; }
+    .wrong { color: #ff6b6b; }
+    .result { text-align: center; }
+    .btn-home {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: #444;
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Question text</h2>
+    <ul>
+      <li>
+        <input type="radio" name="answer" id="a" class="answer">
+        <label for="a" id="a_text">Option A</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="b" class="answer">
+        <label for="b" id="b_text">Option B</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="c" class="answer">
+        <label for="c" id="c_text">Option C</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="d" class="answer">
+        <label for="d" id="d_text">Option D</label>
+      </li>
+    </ul>
+    <button id="submit">Submit</button>
+    <div id="feedback" class="feedback"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {question:"Q1. Which of the following is a scalar quantity?",a:"Velocity",b:"Displacement",c:"Acceleration",d:"Speed",correct:"d"},
+      {question:"Q2. Displacement can be:",a:"Only positive",b:"Only negative",c:"Positive, negative, or zero",d:"Always zero",correct:"c"},
+      {question:"Q3. The slope of a distance–time graph represents:",a:"Acceleration",b:"Velocity",c:"Speed",d:"Displacement",correct:"b"},
+      {question:"Q4. The slope of a velocity–time graph gives:",a:"Speed",b:"Displacement",c:"Acceleration",d:"Distance",correct:"c"},
+      {question:"Q5. Which of the following can be zero even if distance is not zero?",a:"Speed",b:"Time",c:"Displacement",d:"Acceleration",correct:"c"},
+      {question:"Q6. SI unit of acceleration is:",a:"m/s",b:"m/s²",c:"km/h²",d:"cm/s",correct:"b"},
+      {question:"Q7. Which equation of motion is correct?",a:"v = u + at",b:"v = u + at²",c:"v² = u² + at",d:"s = vt²",correct:"a"},
+      {question:"Q8. A car moves 60 km in 2 hours. Average speed = ?",a:"20 km/h",b:"30 km/h",c:"40 km/h",d:"60 km/h",correct:"b"},
+      {question:"Q9. If acceleration is zero, velocity is:",a:"Constant",b:"Zero",c:"Infinite",d:"Negative",correct:"a"},
+      {question:"Q10. A particle covers 20 m in 4 s. Average velocity = ?",a:"2.5 m/s",b:"4 m/s",c:"5 m/s",d:"10 m/s",correct:"c"},
+      {question:"Q11. Free fall acceleration near Earth is:",a:"8.9 m/s²",b:"9.8 m/s²",c:"10.8 m/s²",d:"0 m/s²",correct:"b"},
+      {question:"Q12. Which graph shows uniform acceleration?",a:"Straight line velocity–time graph",b:"Curve",c:"Zig-zag",d:"Horizontal line in distance–time",correct:"a"},
+      {question:"Q13. A ball thrown vertically upwards returns to the same point. Displacement = ?",a:"Zero",b:"Positive",c:"Negative",d:"Can’t say",correct:"a"},
+      {question:"Q14. A bus decelerates from 25 m/s to 0 in 10 s. Retardation = ?",a:"2.5 m/s²",b:"5 m/s²",c:"10 m/s²",d:"25 m/s²",correct:"a"},
+      {question:"Q15. Which is true for uniform motion?",a:"Displacement = Distance",b:"Velocity = Acceleration",c:"Speed decreases",d:"Direction changes",correct:"a"},
+      {question:"Q16. Area under velocity–time graph represents:",a:"Speed",b:"Distance/Displacement",c:"Acceleration",d:"Force",correct:"b"},
+      {question:"Q17. Which is a vector?",a:"Speed",b:"Distance",c:"Work",d:"Acceleration",correct:"d"},
+      {question:"Q18. Which is constant in uniform circular motion?",a:"Velocity",b:"Speed",c:"Acceleration",d:"Displacement",correct:"b"},
+      {question:"Q19. If a car moves north 5 km then south 5 km, displacement = ?",a:"0 km",b:"5 km",c:"10 km",d:"None",correct:"a"},
+      {question:"Q20. A train moves with 10 m/s² acceleration for 10s. Displacement = ?",a:"100 m",b:"200 m",c:"400 m",d:"500 m",correct:"d"},
+      {question:"Q21. Which equation gives distance in nth second of free fall?",a:"u + at",b:"u + ½ at²",c:"u + ½ a (2n-1)",d:"None",correct:"c"},
+      {question:"Q22. Displacement is always:",a:"≥ Distance",b:"≤ Distance",c:"= Distance",d:"Greater than Distance",correct:"b"},
+      {question:"Q23. Which type of graph represents a body at rest?",a:"Sloping line in distance–time",b:"Horizontal line in distance–time",c:"Sloping velocity–time",d:"Curve",correct:"b"},
+      {question:"Q24. If initial velocity is 10 m/s, a = 2 m/s², t = 5s, displacement = ?",a:"25 m",b:"50 m",c:"75 m",d:"100 m",correct:"c"},
+      {question:"Q25. Unit of velocity is:",a:"m",b:"m/s",c:"m/s²",d:"m²/s",correct:"b"},
+      {question:"Q26. Can velocity be zero while acceleration is not?",a:"Yes",b:"No",c:"Only in vacuum",d:"None",correct:"a"},
+      {question:"Q27. Which of the following is correct?",a:"Distance ≥ Displacement",b:"Displacement ≥ Distance",c:"Distance = Displacement always",d:"Both are vectors",correct:"a"},
+      {question:"Q28. A car travels at 72 km/h. Convert to m/s.",a:"15 m/s",b:"20 m/s",c:"25 m/s",d:"30 m/s",correct:"b"},
+      {question:"Q29. A rocket starts from rest and accelerates at 50 m/s² for 2s. Final velocity = ?",a:"25 m/s",b:"50 m/s",c:"75 m/s",d:"100 m/s",correct:"d"},
+      {question:"Q30. Which is not a kinematic equation?",a:"v = u + at",b:"s = ut + ½ at²",c:"v² = u² + 2as",d:"F = ma",correct:"d"},
+      {question:"Q31. If velocity–time graph is horizontal line, acceleration = ?",a:"0",b:"Constant",c:"Increasing",d:"Decreasing",correct:"a"},
+      {question:"Q32. A ball thrown upwards returns in 8s. Initial velocity = ? (g=10)",a:"20 m/s",b:"30 m/s",c:"40 m/s",d:"50 m/s",correct:"c"},
+      {question:"Q33. A body covers 80m in 20s with uniform acceleration starting from rest. Acceleration = ?",a:"0.2 m/s²",b:"0.4 m/s²",c:"0.8 m/s²",d:"1.2 m/s²",correct:"b"},
+      {question:"Q34. A bus covers 30 km with 30 km/h and next 30 km with 60 km/h. Average speed = ?",a:"40 km/h",b:"45 km/h",c:"50 km/h",d:"55 km/h",correct:"a"},
+      {question:"Q35. Which motion is one-dimensional?",a:"Earth around Sun",b:"Lift moving up",c:"Fan blade rotation",d:"Projectile",correct:"b"},
+      {question:"Q36. Displacement–time graph slope = ?",a:"Speed",b:"Velocity",c:"Acceleration",d:"Distance",correct:"b"},
+      {question:"Q37. A particle moves with uniform velocity. Acceleration = ?",a:"Positive",b:"Negative",c:"Zero",d:"Constant",correct:"c"},
+      {question:"Q38. Which is always non-negative?",a:"Displacement",b:"Distance",c:"Velocity",d:"Acceleration",correct:"b"},
+      {question:"Q39. A ball dropped freely for 3s. Final velocity = ? (g=10)",a:"10 m/s",b:"20 m/s",c:"30 m/s",d:"40 m/s",correct:"c"},
+      {question:"Q40. A car moves with constant speed. Its acceleration = ?",a:"Zero",b:"Constant positive",c:"Constant negative",d:"Variable",correct:"a"},
+      {question:"Q41. Which of the following is not a scalar?",a:"Mass",b:"Speed",c:"Work",d:"Velocity",correct:"d"},
+      {question:"Q42. SI unit of displacement = ?",a:"m/s",b:"m",c:"m/s²",d:"N",correct:"b"},
+      {question:"Q43. A particle has negative velocity and positive acceleration. It will:",a:"Speed up",b:"Slow down",c:"Stay at rest",d:"Reverse",correct:"b"},
+      {question:"Q44. Which is correct?",a:"Acceleration is rate of change of velocity",b:"Acceleration is rate of change of displacement",c:"Acceleration is rate of change of speed",d:"Acceleration is constant always",correct:"a"},
+      {question:"Q45. Which equation is dimensionally correct?",a:"v = u + at",b:"v = u + at²",c:"v² = u² + at",d:"s = ut + at",correct:"a"},
+      {question:"Q46. A body moves 10 m north, 10 m east. Net displacement = ?",a:"10 m",b:"14.1 m",c:"20 m",d:"0 m",correct:"b"},
+      {question:"Q47. An object thrown vertically upwards has velocity zero at:",a:"Start",b:"Maximum height",c:"On way down",d:"Never",correct:"b"},
+      {question:"Q48. Retardation is:",a:"Negative velocity",b:"Negative acceleration",c:"Positive velocity",d:"Constant displacement",correct:"b"},
+      {question:"Q49. A train covers 120 km at 40 km/h and 120 km at 60 km/h. Average speed = ?",a:"48 km/h",b:"50 km/h",c:"52 km/h",d:"54 km/h",correct:"a"},
+      {question:"Q50. Motion of a pendulum bob is:",a:"1D",b:"2D",c:"3D",d:"None",correct:"b"},
+    ];
+
+    const questionEl = document.getElementById('question');
+    const answersEls = document.querySelectorAll('.answer');
+    const a_text = document.getElementById('a_text');
+    const b_text = document.getElementById('b_text');
+    const c_text = document.getElementById('c_text');
+    const d_text = document.getElementById('d_text');
+    const submitBtn = document.getElementById('submit');
+    const feedbackEl = document.getElementById('feedback');
+
+    let currentQuiz = 0;
+    let score = 0;
+    let answered = false;
+
+    loadQuiz();
+
+    function loadQuiz() {
+      deselectAnswers();
+      answered = false;
+      feedbackEl.innerHTML = "";
+      submitBtn.textContent = "Submit";
+
+      const currentQuizData = quizData[currentQuiz];
+      questionEl.innerText = currentQuizData.question;
+      a_text.innerText = currentQuizData.a;
+      b_text.innerText = currentQuizData.b;
+      c_text.innerText = currentQuizData.c;
+      d_text.innerText = currentQuizData.d;
+    }
+
+    function deselectAnswers() {
+      answersEls.forEach(el => el.checked = false);
+    }
+
+    function getSelected() {
+      let answer;
+      answersEls.forEach(el => { if (el.checked) answer = el.id; });
+      return answer;
+    }
+
+    submitBtn.addEventListener('click', () => {
+      if (!answered) {
+        const answer = getSelected();
+        if (!answer) { alert("Please select an option!"); return; }
+
+        const correct = quizData[currentQuiz].correct;
+        if (answer === correct) {
+          score++;
+          feedbackEl.innerHTML = `<span class="correct">✅ Correct!</span>`;
+        } else {
+          const correctText = document.getElementById(correct + "_text").innerText;
+          feedbackEl.innerHTML = `<span class="wrong">❌ Wrong! Correct answer: ${correctText}</span>`;
+        }
+
+        answered = true;
+        submitBtn.textContent = (currentQuiz < quizData.length - 1) ? "Next Question" : "See Results";
+      } else {
+        currentQuiz++;
+        if (currentQuiz < quizData.length) {
+          loadQuiz();
+        } else {
+          document.querySelector('.quiz-container').innerHTML =
+            `<div class="result">
+               <h2>You answered ${score}/${quizData.length} correctly</h2>
+               <a href="physics.html" class="btn-home">Retry</a>
+               <a href="index.html" class="btn-home">Back to Home</a>
+             </div>`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

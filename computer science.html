@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Computer Science Quiz</title
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #0f172a 20%, #020617 100%);
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .quiz-container {
+      background: #151b3d;
+      padding: 20px;
+      border-radius: 12px;
+      width: 600px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    h2 { margin-bottom: 15px; font-size: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 10px; }
+    label { cursor: pointer; }
+    button {
+      padding: 10px 16px;
+      margin-top: 12px;
+      border: none;
+      background: linear-gradient(90deg,#00d4ff,#7a5cff);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .feedback { margin-top: 12px; font-weight: bold; }
+    .correct { color: #47ffa7; }
+    .wrong { color: #ff6b6b; }
+    .result { text-align: center; }
+    .btn-home {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: #444;
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Question text</h2>
+    <ul>
+      <li>
+        <input type="radio" name="answer" id="a" class="answer">
+        <label for="a" id="a_text">Option A</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="b" class="answer">
+        <label for="b" id="b_text">Option B</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="c" class="answer">
+        <label for="c" id="c_text">Option C</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="d" class="answer">
+        <label for="d" id="d_text">Option D</label>
+      </li>
+    </ul>
+    <button id="submit">Submit</button>
+    <div id="feedback" class="feedback"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {question:"1. HTML stands for:",a:"Hyperlinks and Text Markup Language",b:"Hyper Text Markup Language",c:"Home Tool Markup Language",d:"Hyper Tool Multi Language",correct:"b"},
+      {question:"2. HTML is used to:",a:"Style web pages",b:"Structure content on the web",c:"Add interactivity",d:"Connect to databases",correct:"b"},
+      {question:"3. Who is the father of HTML?",a:"Tim Berners-Lee",b:"Brendan Eich",c:"Charles Babbage",d:"James Gosling",correct:"a"},
+      {question:"4. HTML files are saved with extension:",a:".htm or .html",b:".css",c:".js",d:".php",correct:"a"},
+      {question:"5. Which HTML version is the latest standard?",a:"HTML 4",b:"HTML 5",c:"XHTML",d:"SGML",correct:"b"},
+      {question:"6. HTML is a:",a:"Programming language",b:"Markup language",c:"Database language",d:"Styling language",correct:"b"},
+      {question:"7. The <html> tag defines:",a:"The head section",b:"The body section",c:"The entire HTML document",d:"A paragraph",correct:"c"},
+      {question:"8. Which tag defines the visible part of the webpage?",a:"<html>",b:"<head>",c:"<body>",d:"<title>",correct:"c"},
+      {question:"9. Which HTML tag is used for the page title?",a:"<h1>",b:"<title>",c:"<head>",d:"<body>",correct:"b"},
+      {question:"10. Which tag is used to insert a line break?",a:"<lb>",b:"<break>",c:"<br>",d:"<newline>",correct:"c"},
+      {question:"11. Which tag is used to create hyperlinks?",a:"<a>",b:"<link>",c:"<href>",d:"<hyper>",correct:"a"},
+      {question:"12. Correct syntax for adding a link:",a:"<a src='url'>text</a>",b:"<a href='url'>text</a>",c:"<link url='text'>",d:"<a url='href'>text</a>",correct:"b"},
+      {question:"13. Which tag is used to insert an image?",a:"<image>",b:"<img>",c:"<src>",d:"<pic>",correct:"b"},
+      {question:"14. Attribute for alternative text in image:",a:"title",b:"alt",c:"src",d:"href",correct:"b"},
+      {question:"15. Which tag is for largest heading?",a:"<head>",b:"<h6>",c:"<h1>",d:"<title>",correct:"c"},
+      {question:"16. Which tag is for smallest heading?",a:"<h6>",b:"<h5>",c:"<h4>",d:"<h3>",correct:"a"},
+      {question:"17. Numbered list element is:",a:"<ul>",b:"<ol>",c:"<dl>",d:"<list>",correct:"b"},
+      {question:"18. Bulleted list element is:",a:"<ol>",b:"<ul>",c:"<dl>",d:"<list>",correct:"b"},
+      {question:"19. List items use:",a:"<li>",b:"<item>",c:"<list>",d:"<bullet>",correct:"a"},
+      {question:"20. Element for table:",a:"<tab>",b:"<table>",c:"<td>",d:"<tr>",correct:"b"},
+      {question:"21. Tag for table row:",a:"<row>",b:"<tr>",c:"<td>",d:"<th>",correct:"b"},
+      {question:"22. Tag for table data cell:",a:"<td>",b:"<tr>",c:"<table>",d:"<th>",correct:"a"},
+      {question:"23. Tag for table header:",a:"<head>",b:"<td>",c:"<th>",d:"<header>",correct:"c"},
+      {question:"24. Attribute specifying image URL:",a:"link",b:"href",c:"src",d:"alt",correct:"c"},
+      {question:"25. Tag for horizontal line:",a:"<line>",b:"<hr>",c:"<break>",d:"<border>",correct:"b"},
+      {question:"26. Comments in HTML start with:",a:"<!-- -->",b:"//",c:"/* */",d:"#",correct:"a"},
+      {question:"27. Paragraph tag:",a:"<para>",b:"<p>",c:"<pg>",d:"<par>",correct:"b"},
+      {question:"28. Metadata tag:",a:"<meta>",b:"<data>",c:"<head>",d:"<info>",correct:"a"},
+      {question:"29. Attribute for new tab in hyperlink:",a:"target='_self'",b:"target='_blank'",c:"open='new'",d:"href='_tab'",correct:"b"},
+      {question:"30. <iframe> tag is used for:",a:"Insert form",b:"Insert image",c:"Webpage inside webpage",d:"Insert table",correct:"c"},
+      {question:"31. Checkbox tag:",a:"<box>",b:"<checkbox>",c:"<input type='checkbox'>",d:"<form-checkbox>",correct:"c"},
+      {question:"32. Text input field tag:",a:"<input type='text'>",b:"<textfield>",c:"<textbox>",d:"<input-text>",correct:"a"},
+      {question:"33. Dropdown list tag:",a:"<list>",b:"<select>",c:"<option>",d:"<menu>",correct:"b"},
+      {question:"34. Items inside <select>:",a:"<option>",b:"<item>",c:"<choice>",d:"<li>",correct:"a"},
+      {question:"35. <form> element is used for:",a:"Writing text",b:"Submitting user input",c:"Adding images",d:"Formatting text",correct:"b"},
+      {question:"36. Attribute of <form> for data destination:",a:"href",b:"src",c:"action",d:"target",correct:"c"},
+      {question:"37. Default method of <form>:",a:"GET",b:"POST",c:"PUT",d:"DELETE",correct:"a"},
+      {question:"38. Attribute to upload files:",a:"enctype='multipart/form-data'",b:"action='upload'",c:"target='file'",d:"method='file'",correct:"a"},
+      {question:"39. HTML tags are enclosed within:",a:"{}",b:"()",c:"<>",d:"[]",correct:"c"},
+      {question:"40. Tag to embed video:",a:"<video>",b:"<media>",c:"<movie>",d:"<source>",correct:"a"},
+      {question:"41. Tag to embed audio:",a:"<music>",b:"<audio>",c:"<sound>",d:"<media>",correct:"b"},
+      {question:"42. <canvas> element is used for:",a:"Images",b:"Drawing graphics",c:"Forms",d:"Videos",correct:"b"},
+      {question:"43. HTML API for storage:",a:"WebStorage",b:"LocalStorage",c:"IndexedDB",d:"All of these",correct:"d"},
+      {question:"44. HTML entities are used for:",a:"Special characters",b:"Images",c:"Links",d:"Headings",correct:"a"},
+      {question:"45. Entity &lt; represents:",a:">",b:"<",c:"&",d:"\"",correct:"b"},
+      {question:"46. Tag to insert code line:",a:"<code>",b:"<script>",c:"<kbd>",d:"<pre>",correct:"a"},
+      {question:"47. <pre> tag is used for:",a:"Preloading images",b:"Preformatted text",c:"Printing text",d:"Preview text",correct:"b"},
+      {question:"48. Tag for emphasizing text:",a:"<i>",b:"<em>",c:"<strong>",d:"<mark>",correct:"b"},
+      {question:"49. Tag to highlight text:",a:"<strong>",b:"<highlight>",c:"<mark>",d:"<u>",correct:"c"},
+      {question:"50. HTML is case-sensitive. True or False?",a:"True",b:"False",c:"-",d:"-",correct:"b"}
+    ];
+
+    const questionEl = document.getElementById('question');
+    const answersEls = document.querySelectorAll('.answer');
+    const a_text = document.getElementById('a_text');
+    const b_text = document.getElementById('b_text');
+    const c_text = document.getElementById('c_text');
+    const d_text = document.getElementById('d_text');
+    const submitBtn = document.getElementById('submit');
+    const feedbackEl = document.getElementById('feedback');
+
+    let currentQuiz = 0;
+    let score = 0;
+    let answered = false;
+
+    loadQuiz();
+
+    function loadQuiz() {
+      deselectAnswers();
+      answered = false;
+      feedbackEl.innerHTML = "";
+      submitBtn.textContent = "Submit";
+
+      const currentQuizData = quizData[currentQuiz];
+      questionEl.innerText = currentQuizData.question;
+      a_text.innerText = currentQuizData.a;
+      b_text.innerText = currentQuizData.b;
+      c_text.innerText = currentQuizData.c;
+      d_text.innerText = currentQuizData.d;
+    }
+
+    function deselectAnswers() {
+      answersEls.forEach(el => el.checked = false);
+    }
+
+    function getSelected() {
+      let answer;
+      answersEls.forEach(el => { if (el.checked) answer = el.id; });
+      return answer;
+    }
+
+    submitBtn.addEventListener('click', () => {
+      if (!answered) {
+        const answer = getSelected();
+        if (!answer) { alert("Please select an option!"); return; }
+
+        const correct = quizData[currentQuiz].correct;
+        if (answer === correct) {
+          score++;
+          feedbackEl.innerHTML = `<span class="correct">✅ Correct!</span>`;
+        } else {
+          const correctText = document.getElementById(correct + "_text").innerText;
+          feedbackEl.innerHTML = `<span class="wrong">❌ Wrong! Correct answer: ${correctText}</span>`;
+        }
+
+        answered = true;
+        submitBtn.textContent = (currentQuiz < quizData.length - 1) ? "Next Question" : "See Results";
+      } else {
+        currentQuiz++;
+        if (currentQuiz < quizData.length) {
+          loadQuiz();
+        } else {
+          document.querySelector('.quiz-container').innerHTML =
+            `<div class="result">
+               <h2>You answered ${score}/${quizData.length} correctly</h2>
+               <a href="computer-science.html" class="btn-home">Retry</a>
+               <a href="index.html" class="btn-home">Back to Home</a>
+             </div>`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>General Science Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #0f172a 20%, #020617 100%);
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .quiz-container {
+      background: #151b3d;
+      padding: 20px;
+      border-radius: 12px;
+      width: 550px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    h2 { margin-bottom: 15px; font-size: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 10px; }
+    label { cursor: pointer; }
+    button {
+      padding: 10px 16px;
+      margin-top: 12px;
+      border: none;
+      background: linear-gradient(90deg,#00d4ff,#7a5cff);
+      color: #fff;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .feedback { margin-top: 12px; font-weight: bold; }
+    .correct { color: #47ffa7; }
+    .wrong { color: #ff6b6b; }
+    .result { text-align: center; }
+    .btn-home {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: #444;
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2 id="question">Question text</h2>
+    <ul>
+      <li>
+        <input type="radio" name="answer" id="a" class="answer">
+        <label for="a" id="a_text">Option A</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="b" class="answer">
+        <label for="b" id="b_text">Option B</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="c" class="answer">
+        <label for="c" id="c_text">Option C</label>
+      </li>
+      <li>
+        <input type="radio" name="answer" id="d" class="answer">
+        <label for="d" id="d_text">Option D</label>
+      </li>
+    </ul>
+    <button id="submit">Submit</button>
+    <div id="feedback" class="feedback"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      {question:"Q1. Who is known as the 'Father of History'?",a:"Herodotus",b:"Aristotle",c:"Socrates",d:"Plato",correct:"a"},
+      {question:"Q2. Which period is called the 'Stone Age'?",a:"When humans used iron tools",b:"When humans used bronze tools",c:"When humans used stone tools",d:"When humans built cities",correct:"c"},
+      {question:"Q3. The study of coins is called:",a:"Archaeology",b:"Numismatics",c:"Epigraphy",d:"Anthropology",correct:"b"},
+      {question:"Q4. Which script was used in Ashoka’s inscriptions?",a:"Devanagari",b:"Brahmi",c:"Tamil",d:"Persian",correct:"b"},
+      {question:"Q5. Harappa is located in present-day:",a:"India",b:"Pakistan",c:"Nepal",d:"Afghanistan",correct:"b"},
+      {question:"Q6. Who discovered the Indus Valley Civilization?",a:"Lord Curzon",b:"R.D. Banerjee",c:"Alexander Cunningham",d:"John Marshall",correct:"b"},
+      {question:"Q7. Which was the first metal used by humans?",a:"Iron",b:"Bronze",c:"Copper",d:"Gold",correct:"c"},
+      {question:"Q8. The Iron Age in India is associated with:",a:"Indus Valley",b:"Vedic Age",c:"Gupta Period",d:"Maurya Period",correct:"b"},
+      {question:"Q9. Who was the founder of the Maurya Empire?",a:"Ashoka",b:"Chandragupta Maurya",c:"Bindusara",d:"Bimbisara",correct:"b"},
+      {question:"Q10. Who wrote Arthashastra?",a:"Ashoka",b:"Kautilya (Chanakya)",c:"Kalidasa",d:"Banabhatta",correct:"b"},
+      {question:"Q11. Ashoka’s Dhamma was based on:",a:"Jainism",b:"Hinduism",c:"Buddhism",d:"Christianity",correct:"c"},
+      {question:"Q12. Which Chinese traveler visited India during Harsha’s reign?",a:"Fa-Hien",b:"Hiuen Tsang",c:"Marco Polo",d:"Megasthenes",correct:"b"},
+      {question:"Q13. Megasthenes was the ambassador of:",a:"Greece",b:"Rome",c:"Persia",d:"China",correct:"a"},
+      {question:"Q14. Who built the Grand Trunk Road?",a:"Ashoka",b:"Chandragupta Maurya",c:"Sher Shah Suri",d:"Akbar",correct:"c"},
+      {question:"Q15. The Mughal dynasty was founded by:",a:"Babur",b:"Humayun",c:"Akbar",d:"Aurangzeb",correct:"a"},
+      {question:"Q16. The Battle of Plassey was fought in:",a:"1757",b:"1764",c:"1857",d:"1947",correct:"a"},
+      {question:"Q17. Who was the first Governor-General of India?",a:"Robert Clive",b:"Warren Hastings",c:"Lord Wellesley",d:"Lord Cornwallis",correct:"b"},
+      {question:"Q18. The Revolt of 1857 started from:",a:"Delhi",b:"Lucknow",c:"Meerut",d:"Kanpur",correct:"c"},
+      {question:"Q19. Who was the last Mughal emperor?",a:"Bahadur Shah I",b:"Bahadur Shah II (Zafar)",c:"Aurangzeb",d:"Akbar II",correct:"b"},
+      {question:"Q20. Who founded the Indian National Congress?",a:"Mahatma Gandhi",b:"W.C. Bonnerjee",c:"Allan Octavian Hume",d:"Dadabhai Naoroji",correct:"c"},
+      {question:"Q21. The first session of Indian National Congress was held in:",a:"Bombay (Mumbai)",b:"Calcutta (Kolkata)",c:"Madras (Chennai)",d:"Delhi",correct:"a"},
+      {question:"Q22. Who is called the 'Grand Old Man of India'?",a:"Mahatma Gandhi",b:"Dadabhai Naoroji",c:"Gopal Krishna Gokhale",d:"B.R. Ambedkar",correct:"b"},
+      {question:"Q23. 'Drain of Wealth' theory was given by:",a:"Gandhi",b:"Tilak",c:"Dadabhai Naoroji",d:"Nehru",correct:"c"},
+      {question:"Q24. Who was the first President of Indian National Congress?",a:"W.C. Bonnerjee",b:"Gandhi",c:"Nehru",d:"Tilak",correct:"a"},
+      {question:"Q25. The Partition of Bengal was done in:",a:"1903",b:"1905",c:"1911",d:"1920",correct:"b"},
+      {question:"Q26. Who started the Home Rule Movement?",a:"Gandhi",b:"Tilak & Annie Besant",c:"Nehru",d:"Subhash Bose",correct:"b"},
+      {question:"Q27. Jallianwala Bagh massacre took place in:",a:"1915",b:"1917",c:"1919",d:"1921",correct:"c"},
+      {question:"Q28. The Non-Cooperation Movement was launched in:",a:"1917",b:"1920",c:"1930",d:"1942",correct:"b"},
+      {question:"Q29. The Civil Disobedience Movement began with:",a:"Quit India Movement",b:"Dandi March",c:"Jallianwala Bagh",d:"Round Table Conference",correct:"b"},
+      {question:"Q30. The Quit India Movement started in:",a:"1930",b:"1935",c:"1940",d:"1942",correct:"d"},
+      {question:"Q31. Who gave the slogan 'Do or Die'?",a:"Gandhi",b:"Nehru",c:"Bose",d:"Tilak",correct:"a"},
+      {question:"Q32. Who founded the Indian National Army (INA)?",a:"Gandhi",b:"Subhash Chandra Bose",c:"Bhagat Singh",d:"Nehru",correct:"b"},
+      {question:"Q33. Which plan proposed partition of India in 1947?",a:"Mountbatten Plan",b:"Cabinet Mission Plan",c:"Cripps Mission",d:"Simon Commission",correct:"a"},
+      {question:"Q34. Who was the first Prime Minister of independent India?",a:"Gandhi",b:"Nehru",c:"Patel",d:"Rajendra Prasad",correct:"b"},
+      {question:"Q35. Who was the first President of India?",a:"Dr. Rajendra Prasad",b:"Dr. S. Radhakrishnan",c:"V.V. Giri",d:"Zakir Hussain",correct:"a"},
+      {question:"Q36. 'Satyameva Jayate' is taken from:",a:"Bhagavad Gita",b:"Rigveda",c:"Mundaka Upanishad",d:"Arthashastra",correct:"c"},
+      {question:"Q37. Who was the last Governor-General of independent India?",a:"Lord Mountbatten",b:"C. Rajagopalachari",c:"Warren Hastings",d:"Lord Wavell",correct:"b"},
+      {question:"Q38. Who gave the slogan 'Swaraj is my birthright'?",a:"Tilak",b:"Gandhi",c:"Nehru",d:"Bose",correct:"a"},
+      {question:"Q39. Who was known as the 'Napoleon of India'?",a:"Chandragupta Maurya",b:"Ashoka",c:"Samudragupta",d:"Harshavardhana",correct:"c"},
+      {question:"Q40. The capital of Magadha under Ashoka was:",a:"Pataliputra",b:"Nalanda",c:"Ujjain",d:"Kannauj",correct:"a"},
+      {question:"Q41. Nalanda University was founded by:",a:"Ashoka",b:"Kumaragupta",c:"Harsha",d:"Kanishka",correct:"b"},
+      {question:"Q42. Who was called 'Akbar the Great'?",a:"Akbar",b:"Aurangzeb",c:"Humayun",d:"Shah Jahan",correct:"a"},
+      {question:"Q43. Which Mughal emperor built the Taj Mahal?",a:"Akbar",b:"Aurangzeb",c:"Shah Jahan",d:"Jahangir",correct:"c"},
+      {question:"Q44. The Battle of Panipat (1526) was fought between:",a:"Akbar & Rana Sanga",b:"Babur & Ibrahim Lodi",c:"Sher Shah & Humayun",d:"Aurangzeb & Shivaji",correct:"b"},
+      {question:"Q45. The Battle of Haldighati was fought between:",a:"Akbar & Rana Pratap",b:"Aurangzeb & Shivaji",c:"Babur & Ibrahim Lodi",d:"Humayun & Sher Shah",correct:"a"},
+      {question:"Q46. Who founded the Gupta Empire?",a:"Chandragupta I",b:"Chandragupta Maurya",c:"Samudragupta",d:"Kumaragupta",correct:"a"},
+      {question:"Q47. The Gupta period is called the:",a:"Golden Age of India",b:"Iron Age",c:"Vedic Age",d:"Age of Buddhism",correct:"a"},
+      {question:"Q48. Who was the first woman ruler of Delhi?",a:"Rani Lakshmi Bai",b:"Razia Sultan",c:"Noor Jahan",d:"Ahilyabai Holkar",correct:"b"},
+      {question:"Q49. Who founded the Mughal dynasty in India?",a:"Akbar",b:"Babur",c:"Humayun",d:"Shah Jahan",correct:"b"},
+      {question:"Q50. Who gave the slogan 'Inquilab Zindabad'?",a:"Gandhi",b:"Bhagat Singh",c:"Bose",d:"Tilak",correct:"b"},
+    ];
+
+    const questionEl = document.getElementById('question');
+    const answersEls = document.querySelectorAll('.answer');
+    const a_text = document.getElementById('a_text');
+    const b_text = document.getElementById('b_text');
+    const c_text = document.getElementById('c_text');
+    const d_text = document.getElementById('d_text');
+    const submitBtn = document.getElementById('submit');
+    const feedbackEl = document.getElementById('feedback');
+
+    let currentQuiz = 0;
+    let score = 0;
+    let answered = false;
+
+    loadQuiz();
+
+    function loadQuiz() {
+      deselectAnswers();
+      answered = false;
+      feedbackEl.innerHTML = "";
+      submitBtn.textContent = "Submit";
+
+      const currentQuizData = quizData[currentQuiz];
+      questionEl.innerText = currentQuizData.question;
+      a_text.innerText = currentQuizData.a;
+      b_text.innerText = currentQuizData.b;
+      c_text.innerText = currentQuizData.c;
+      d_text.innerText = currentQuizData.d;
+    }
+
+    function deselectAnswers() {
+      answersEls.forEach(el => el.checked = false);
+    }
+
+    function getSelected() {
+      let answer;
+      answersEls.forEach(el => { if (el.checked) answer = el.id; });
+      return answer;
+    }
+
+    submitBtn.addEventListener('click', () => {
+      if (!answered) {
+        const answer = getSelected();
+        if (!answer) { alert("Please select an option!"); return; }
+
+        const correct = quizData[currentQuiz].correct;
+        if (answer === correct) {
+          score++;
+          feedbackEl.innerHTML = `<span class="correct">✅ Correct!</span>`;
+        } else {
+          const correctText = document.getElementById(correct + "_text").innerText;
+          feedbackEl.innerHTML = `<span class="wrong">❌ Wrong! Correct answer: ${correctText}</span>`;
+        }
+
+        answered = true;
+        submitBtn.textContent = (currentQuiz < quizData.length - 1) ? "Next Question" : "See Results";
+      } else {
+        currentQuiz++;
+        if (currentQuiz < quizData.length) {
+          loadQuiz();
+        } else {
+          document.querySelector('.quiz-container').innerHTML =
+            `<div class="result">
+               <h2>You answered ${score}/${quizData.length} correctly</h2>
+               <a href="general-science.html" class="btn-home">Retry</a>
+               <a href="index.html" class="btn-home">Back to Home</a>
+             </div>`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

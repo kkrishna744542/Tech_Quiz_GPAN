@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GPAN Tech Quiz — General Science</title>
+  <meta name="description" content="GPAN Tech Fest — General Science track: explore Physics, Chemistry, Biology, Astronomy, events, and register." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdn-icons-png.freepik.com/256/12056/12056772.png?semt=ais_white_label">
+</head>
+<body>
+  <!-- Decorative background -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header" role="banner">
+    <a href="#" class="logo" aria-label="GPAN Tech Fest Home">
+      <!-- Simple inline logo -->
+      <svg viewBox="0 0 180 40" width="160" height="36" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1">
+            <stop offset="0%" stop-color="#00d4ff"/>
+            <stop offset="100%" stop-color="#7a5cff"/>
+          </linearGradient>
+        </defs>
+        <rect x="1" y="1" width="38" height="38" rx="8" fill="url(#g)"/>
+        <text x="52" y="27" font-family="Inter,ui-sans-serif" font-size="20" font-weight="800" fill="#ffffff">GPAN Tech Quiz</text>
+      </svg>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false" title="Open menu">☰</button>
+      <ul id="nav-menu" class="nav-menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#topics">Science Topics</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+        <li><a href="#register">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="home" class="main-content">
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-inner">
+        <h1 id="hero-title">
+          General Science @ <span class="brand">GPAN Tech Quiz</span>
+        </h1>
+        <p class="subtitle">Discover. Experiment. Innovate.</p>
+
+        <div class="countdown" aria-live="polite">
+          <div class="time">
+            <span id="dd" class="num" aria-label="days">--</span><span class="lbl">Days</span>
+          </div>
+          <div class="time">
+            <span id="hh" class="num" aria-label="hours">--</span><span class="lbl">Hours</span>
+          </div>
+          <div class="time">
+            <span id="mm" class="num" aria-label="minutes">--</span><span class="lbl">Mins</span>
+          </div>
+          <div class="time">
+            <span id="ss" class="num" aria-label="seconds">--</span><span class="lbl">Secs</span>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#topics" class="btn primary">Explore Science</a>
+          <button id="set-date" class="btn ghost" title="Set event date/time">Set Event Date</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section about">
+      <div class="container">
+        <h2>About the General Science Track</h2>
+        <p>
+          The General Science track at <strong>GPAN Tech Fest</strong> brings together curiosity-driven
+          minds to explore foundational ideas across Physics, Chemistry, Biology, Astronomy & Computer Science.
+          Expect lightning talks, hands-on demos, and quiz challenges that spark discovery.
+        </p>
+
+        <div class="highlights">
+          <div class="chip" role="listitem">Hands-on Demos</div>
+          <div class="chip" role="listitem">Live Experiments</div>
+          <div class="chip" role="listitem">Expert Talks</div>
+          <div class="chip" role="listitem">Quiz Battles</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Topics -->
+    <section id="topics" class="section topics">
+      <div class="container">
+        <h2>Science Topics</h2>
+        <div class="grid">
+          <article class="card" data-topic="physics" tabindex="0" aria-label="Physics">
+            <div class="icon">⚡</div>
+            <h3>Physics</h3>
+            <p>Motion in one Dimesions, Gravitation , Light.</p>
+            <button class="btn small" data-open="physics">Learn More</button>
+          </article>
+
+          <article class="card" data-topic="chemistry" tabindex="0" aria-label="Chemistry">
+            <div class="icon">🧪</div>
+            <h3>Chemistry</h3>
+            <p>Matter, reactions, periodic trends & bonding.</p>
+            <button class="btn small" data-open="chemistry">Learn More</button>
+          </article>
+
+          <article class="card" data-topic="biology" tabindex="0" aria-label="Biology">
+            <div class="icon">🧬</div>
+            <h3>Biology</h3>
+            <p>Life, cells, genetics & ecosystems.</p>
+            <button class="btn small" data-open="biology">Learn More</button>
+          </article>
+
+          <article class="card" data-topic="astronomy" tabindex="0" aria-label="Astronomy">
+            <div class="icon">🌌</div>
+            <h3>Astronomy</h3>
+            <p>Stars, planets, galaxies & cosmology.</p>
+            <button class="btn small" data-open="astronomy">Learn More</button>
+          </article>
+          <article class="card" data-topic="Computer Science" tabindex="0" aria-label="Computer Science">
+            <div class="icon">💻</div>
+            <h3>Computer Science</h3>
+            <p>HTMl , CSS, JAVA Script , PYTHON.</p>
+            <button class="btn small" data-open="computer">Learn More</button>
+          </article>
+           <article class="card" data-topic="General Science" tabindex="0" aria-label="General Science">
+            <div class="icon">📚</div>
+            <h3>General Science</h3>
+            <p>History, Civics, Geography & General knowledge.</p>
+            <button class="btn small" data-open="general">Learn More</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Schedule -->
+    <section id="schedule" class="section schedule">
+      <div class="container">
+        <h2>Event Schedule</h2>
+        <ol class="timeline" role="list">
+          <li>
+            <div class="time-badge">10:00</div>
+            <div class="content">
+              <h4>Opening Ceremony</h4>
+              <p>Welcome remarks, guidelines, and track overview.</p>
+            </div>
+          </li>
+          <li>
+            <div class="time-badge">10:30</div>
+            <div class="content">
+              <h4>Physics Live Demo</h4>
+              <p>Wave interference & resonance experiments.</p>
+            </div>
+          </li>
+          <li>
+            <div class="time-badge">11:30</div>
+            <div class="content">
+              <h4>Chemistry Micro-Lab</h4>
+              <p>Color changes, pH indicators & safe reactions.</p>
+            </div>
+          </li>
+          <li>
+            <div class="time-badge">12:30</div>
+            <div class="content">
+              <h4>Lunch Break</h4>
+            </div>
+          </li>
+          <li>
+            <div class="time-badge">13:30</div>
+            <div class="content">
+              <h4>Biology Corner</h4>
+              <p>Microscopy basics & observing cell structures.</p>
+            </div>
+          </li>
+          <li>
+            <div class="time-badge">15:00</div>
+            <div class="content">
+              <h4>Astronomy Talk</h4>
+              <p>Exoplanets & life beyond Earth.</p>
+            </div>
+          </li>
+          <li>
+            <div class="time-badge">16:00</div>
+            <div class="content">
+              <h4>Science Quiz Finals</h4>
+              <p>Top teams battle for the GPAN trophy.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Registration -->
+    <section id="register" class="section register">
+      <div class="container">
+        <h2>Register Now</h2>
+        <form id="reg-form" novalidate>
+          <div class="form-row">
+            <label for="name">Full Name</label>
+            <input id="name" name="name" type="text" placeholder="Rohit Raj" required />
+            <small class="error" data-for="name"></small>
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            <small class="error" data-for="email"></small>
+          </div>
+          <div class="form-row">
+            <label for="branch">Branch</label>
+            <select id="branch" name="branch" required>
+              <option value="">Select branch</option>
+              <option value="CSE">CSE</option>
+              <option value="ECE">ECE</option>
+              <option value="ME">ME</option>
+              <option value="CE">CE</option>
+              <option value="EE">EE</option>
+            </select>
+            <small class="error" data-for="branch"></small>
+          </div>
+          <div class="form-row">
+            <label for="team">Team Name (optional)</label>
+            <input id="team" name="team" type="text" placeholder="Quantum Quizzers" />
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn primary">Submit</button>
+            <button type="button" id="export-csv" class="btn ghost">Export CSV</button>
+          </div>
+          <p class="form-note">By registering, you agree to follow event guidelines.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Created by <strong>Rohit Raj — CSE Branch</strong></p>
+      <div class="socials" aria-label="Social links">
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="Twitter / X">Twitter</a>
+        <a href="#" aria-label="YouTube">YouTube</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Topic Modals -->
+  <dialog id="modal-physics" class="modal">
+    <form method="dialog">
+      <h3>Physics</h3>
+      <p>Physical Quantities , Distance & Displacement Newton's Law of Gravitation , Gravitaional Constant & Nature of Light , Reflection of Light.</p>
+      <button class="btn small">Close</button>
+      <a href="physics.html" class="btn small">Ok</a>
+    </form>
+  </dialog>
+  <dialog id="modal-chemistry" class="modal">
+    <form method="dialog">
+      <h3>Chemistry</h3>
+      <p>Matter and States , Properties of Matter & Types of Chemical Reaction , Application of Reactions in Daily Life & Mendeleev's Periodic Table , Modern Periodic Table & Types of Chemical Bonds , Metallic Bonding. </p>
+      <button class="btn small">Close</button>
+      <a href="chemistry.html"class="btn small">OK</a>
+    </form>
+  </dialog>
+  <dialog id="modal-biology" class="modal">
+    <form method="dialog">
+      <h3>Biology</h3>
+      <p>The Living World, Plant Kingdom & Cell – The Unit of Life ,
+
+Biomolecules & Principles of Inheritance  Variation ,
+
+Molecular Basis of Inheritance & Organisms , Populations
+
+Ecosystem.</p>
+      <button class="btn small">Close</button>
+      <a href="biology.html"class="btn small">OK</a>
+    </form>
+  </dialog>
+  <dialog id="modal-astronomy" class="modal">
+    <form method="dialog">
+      <h3>Astronomy</h3>
+      <p>Formation of Stars , Types of Stars, & The Sun – Our Star , Moons, Asteroids, Comets & Meteoroids & Structure of the Milky Way ,Types of Galaxies .</p>
+</p>
+      <button class="btn small">Close</button>
+      <a href="astronomy.html"class="btn small">OK</a>
+    </form>
+  </dialog> 
+   <dialog id="modal-computer" class="modal">
+    <form method="dialog">
+ <h3>Computer Science</h3>
+      <p>Introduction to HTML , Text Formatting & Headings & Introduction to CSS Colors, Backgrounds & Borders & Introduction to JavaScript , Data Types  .</p>
+      <button class="btn small">Close</button>
+      <a href="computer science.html"class="btn small">OK</a>
+</form>
+</dialog>
+ <dialog id="modal-general" class="modal">
+    <form method="dialog">
+ <h3>General Science</h3>
+      <p>Introduction to History , Introduction to Civics , Introduction to Geography & General Knowledge (Random) .</p>
+      <button class="btn small">Close</button>
+      <a href="general science.html"class="btn small">OK</a>
+</form>
+</dialog>
+  <script src="script.js"></script>
+</body>
+</html>
